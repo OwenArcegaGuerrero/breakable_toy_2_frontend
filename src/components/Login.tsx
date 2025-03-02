@@ -19,40 +19,48 @@ const LoginComponent: React.FC = () => {
     <Box
       sx={{
         display: "flex",
-        justifyContent: "center",
+        flexDirection: "column",
         alignItems: "center",
-        border: "2px solid red",
-        width: "100%",
-        height: "100%",
-        paddingTop: "5%",
-        p: "7% 5%",
+        justifyContent: "center",
+        width: "100vw",
+        height: "100vh",
       }}
     >
       <Box
         sx={{
-          width: "80%",
-          height: "80%",
-          border: "5px solid #07077a",
-          borderRadius: 5,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
-          gap: "20vh",
+          justifyContent: "space-evenly",
+          width: "70%",
+          height: "50%",
+          border: "3px solid darkblue",
+          borderRadius: 5,
         }}
       >
-        <Box sx={{ fontSize: "5rem", fontFamily: "sans-serif" }}>
+        <Box
+          sx={{
+            width: "100%",
+            height: "auto",
+            textAlign: "center",
+            fontFamily: "sans-serif",
+            fontSize: "5rem",
+          }}
+        >
           Login to Spotify
         </Box>
         <Button
           variant="contained"
           sx={{
             backgroundColor: "#0f71d4",
-            height: "8.5vh",
+            height: "20%",
             width: "20%",
             fontSize: "1.3rem",
             fontFamily: "sans-serif",
             textTransform: "none",
+            border: 0,
+            borderRadius: 3,
+            marginTop: 5,
           }}
           onClick={() => handleLogin()}
         >
