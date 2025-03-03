@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import TopArtists from "../../components/TopArtists";
 
 interface TopArtists {
   artists: {

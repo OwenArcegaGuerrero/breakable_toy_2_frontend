@@ -29,6 +29,7 @@ const SearchBar: React.FC = () => {
 
   return (
     <TextField
+      placeholder="Search by artist, song, playlist or album"
       value={searchBar}
       onKeyDown={handleKeyDown}
       onChange={(e) => {

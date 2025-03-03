@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
         boxSizing: "border-box",
         alignItems: "center",
         justifyContent: "center",
-        gap: 2,
+        gap: 5,
       }}
     >
       <Box sx={{ height: "20%", width: "50%" }}>
