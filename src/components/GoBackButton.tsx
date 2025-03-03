@@ -1,15 +1,10 @@
 import { Button } from "@mui/material";
 import React from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch } from "../app/store";
-import { setArtistId } from "../app/artistDetails/artistDetailsSlice";
 
 const GoBackButton: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
   const hanleClick = () => {
-    dispatch(setArtistId(""));
     navigate(-1);
   };
   return (
@@ -24,6 +19,7 @@ const GoBackButton: React.FC = () => {
         "&:hover": {
           boxShadow: 5,
         },
+        textTransform: "none",
       }}
     >
       Go Back

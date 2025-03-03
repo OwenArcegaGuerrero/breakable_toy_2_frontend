@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../app/store";
-import {
-  getArtistDetails,
-  setArtistId,
-} from "../app/artistDetails/artistDetailsSlice";
+import { getArtistDetails } from "../app/artistDetails/artistDetailsSlice";
 import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -25,8 +22,7 @@ const ArtistPage: React.FC = () => {
     const urlParams = new URLSearchParams(queryString);
     const id = urlParams.get("id");
     if (id) {
-      dispatch(setArtistId(id));
-      dispatch(getArtistDetails());
+      dispatch(getArtistDetails(id));
     } else {
       navigate("/login");
     }
@@ -99,6 +95,7 @@ const ArtistPage: React.FC = () => {
                 }
                 main={album.name ? album.name : ""}
                 secondary={album.release_date}
+                redirection={"/album?id=" + album.id}
               />
             ))
           ) : (

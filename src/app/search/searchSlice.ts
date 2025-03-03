@@ -1,83 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface search {
-  searchValue: string;
-  searchResults: {
-    tracks?: {
-      items: [
-        {
-          name: string;
-          explicit: boolean;
-          album: {
-            name: string;
-            images?: [
-              {
-                url: string;
-              }
-            ];
-          };
-          artists: [
-            {
-              id: string;
-              name: string;
-            }
-          ];
-        }
-      ];
-    };
-    albums?: {
-      items: [
-        {
-          name: string;
-          artists: [
-            {
-              id: string;
-              name: string;
-            }
-          ];
-          release_date: string;
-          images?: [
-            {
-              url: string;
-            }
-          ];
-        }
-      ];
-    };
-    playlists?: {
-      items: [
-        {
-          name?: string;
-          owner: {
-            display_name: string;
-          };
-          tracks: {
-            total: number;
-          };
-          images?: [
-            {
-              url: string;
-            }
-          ];
-        }
-      ];
-    };
-    artists?: {
-      items: [
-        {
-          id?: string;
-          name: string;
-          genres?: string[];
-          images?: [
-            {
-              url: string;
-            }
-          ];
-        }
-      ];
-    };
-  };
-}
+import { search } from "../../interfaces/SearchSliceProps";
 
 const initialState: search = {
   searchValue: "",
@@ -95,7 +17,6 @@ const searchSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getSearchResult.fulfilled, (state, action) => {
       state.searchResults = action.payload;
-      console.log(state.searchResults);
     });
   },
 });
