@@ -89,6 +89,8 @@ const SearchResults: React.FC = () => {
               artist.images?.[0]?.url ? artist.images[0].url : defaultImage
             }
             main={artist.name}
+            secondary={artist.genres?.map((genre) => genre).join(",")}
+            redirection={"/artist?id=" + artist.id}
           />
         ))}
       </Box>

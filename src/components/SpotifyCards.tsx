@@ -1,16 +1,23 @@
 import { Box } from "@mui/material";
 import React from "react";
+import { SpotifyCardsProps } from "../interfaces/SpotifyCardsProps";
+import { useNavigate } from "react-router-dom";
 
-interface Props {
-  image: string;
-  main: string;
-  secondary?: string;
-  third?: string;
-}
+const SpotifyCards: React.FC<SpotifyCardsProps> = ({
+  main,
+  secondary,
+  third,
+  image,
+  redirection,
+}) => {
+  const navigate = useNavigate();
 
-const SpotifyCards: React.FC<Props> = ({ main, secondary, third, image }) => {
+  const handleClick = () => {
+    navigate(redirection ? redirection : "");
+  };
   return (
     <Box
+      onClick={handleClick}
       sx={{
         border: "1px solid lightgray",
         borderRadius: "5px",
@@ -24,6 +31,10 @@ const SpotifyCards: React.FC<Props> = ({ main, secondary, third, image }) => {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "sans-serif",
+        "&:hover": {
+          cursor: "pointer",
+          boxShadow: 5,
+        },
       }}
     >
       <img

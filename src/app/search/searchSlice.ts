@@ -65,6 +65,7 @@ interface search {
     artists?: {
       items: [
         {
+          id?: string;
           name: string;
           genres?: string[];
           images?: [
