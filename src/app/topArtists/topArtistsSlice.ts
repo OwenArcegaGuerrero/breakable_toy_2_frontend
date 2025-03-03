@@ -1,23 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { TopArtistsSliceProps } from "../../interfaces/topArtistsSliceProps";
 
-interface TopArtists {
-  artists: {
-    items?: [
-      {
-        genres?: string[];
-        id?: string;
-        images?: [
-          {
-            url?: string;
-          }
-        ];
-        name: string;
-      }
-    ];
-  };
-}
-
-const initialState: TopArtists = {
+const initialState: TopArtistsSliceProps = {
   artists: {},
 };
 

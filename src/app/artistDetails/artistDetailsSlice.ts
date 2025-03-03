@@ -1,41 +1,14 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { artistDetailsSliceProps } from "../../interfaces/artistDetailsSliceProps";
 
-interface artistDetails {
-  artistId?: string;
-  details: {
-    artistDetails?: {
-      name?: string;
-      images?: [
-        {
-          url: string;
-        }
-      ];
-    };
-    artistTopTracks?: {};
-    artistAlbums?: {
-      items?: Array<{
-        images?: Array<{ url?: string }>;
-        name?: string;
-        release_date?: string;
-        id?: string;
-      }>;
-    };
-  };
-}
-
-const initialState: artistDetails = {
-  artistId: "",
+const initialState: artistDetailsSliceProps = {
   details: {},
 };
 
 const artistDetailsSlice = createSlice({
   name: "artistDetails",
   initialState,
-  reducers: {
-    setArtistId: (state, action: PayloadAction<string>) => {
-      state.artistId = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getArtistDetails.fulfilled, (state, action) => {
       state.details = action.payload;
@@ -45,10 +18,8 @@ const artistDetailsSlice = createSlice({
 
 export const getArtistDetails = createAsyncThunk(
   "artistDetails/getArtistDetails",
-  async (_, { getState }) => {
-    const state = getState() as { artistDetails: artistDetails };
-    const artistId = state.artistDetails.artistId;
-    const data = await fetch("http://localhost:8080/artists/" + artistId, {
+  async (id: string) => {
+    const data = await fetch("http://localhost:8080/artists/" + id, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -57,5 +28,5 @@ export const getArtistDetails = createAsyncThunk(
   }
 );
 
-export const { setArtistId } = artistDetailsSlice.actions;
+export const {} = artistDetailsSlice.actions;
 export default artistDetailsSlice.reducer;
