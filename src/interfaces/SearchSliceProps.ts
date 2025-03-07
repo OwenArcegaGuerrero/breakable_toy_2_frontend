@@ -3,6 +3,7 @@ export interface search {
   searchResults: {
     tracks?: {
       items: Array<{
+        id?: string;
         name: string;
         explicit: boolean;
         album: {
@@ -33,6 +34,7 @@ export interface search {
     };
     playlists?: {
       items: Array<{
+        id?: string;
         name?: string;
         owner: {
           display_name: string;

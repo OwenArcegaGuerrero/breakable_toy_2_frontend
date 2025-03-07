@@ -1,14 +1,16 @@
 import { Box } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import GoBackButton from "./GoBackButton";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../app/store";
 import { getAlbumDetails } from "../app/albumDetails/albumDetailsSlice";
-import { useSelector } from "react-redux";
 import { imagePlaceholder } from "../../public/imagePlaceholder";
 import AlbumSongsTable from "./AlbumSongsTable";
+import { getColorsFromImage, getContrastYIQ } from "../utils";
 
 const AlbumPage: React.FC = () => {
+  const [primaryColor, setPrimaryColor] = useState<string>("#333");
+
   const calculateTotalDuration = (tracks: Array<{ duration_ms: number }>) => {
     const totalMilisecondDuration: number = tracks.reduce(
       (acc, track) => acc + track.duration_ms,
@@ -32,6 +34,7 @@ const AlbumPage: React.FC = () => {
     (state: RootState) => state.albumDetails.details
   );
   const dispatch = useDispatch<AppDispatch>();
+
   const getDetails = () => {
     const queryParams = window.location.search;
     const urlParams = new URLSearchParams(queryParams);
@@ -45,8 +48,23 @@ const AlbumPage: React.FC = () => {
     getDetails();
   }, []);
 
+  // Extraer el color primario de la portada del álbum para ajustar los estilos
+  useEffect(() => {
+    if (albumDetails?.images?.[0]?.url) {
+      getColorsFromImage(albumDetails.images[0].url)
+        .then((colors) => {
+          if (colors.length > 0) {
+            setPrimaryColor(colors[0].hex);
+          }
+        })
+        .catch((error) =>
+          console.error("Error extrayendo colores del álbum:", error)
+        );
+    }
+  }, [albumDetails]);
+
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", backgroundColor: primaryColor, color: "#fff" }}>
       <Box
         sx={{
           display: "flex",
@@ -59,29 +77,26 @@ const AlbumPage: React.FC = () => {
           gap: 4,
         }}
       >
-        <Box sx={{ display: "flex", width: "100%", height: "7vh" }}>
+        <Box
+          data-testid="go-back-button"
+          sx={{ display: "flex", width: "100%", height: "7vh" }}
+        >
           <GoBackButton />
         </Box>
         <Box sx={{ width: "100%" }}>
-          <h1>{albumDetails?.name}</h1>
-          <Box
-            sx={{
-              display: "flex",
-              gap: 5,
-            }}
-          >
+          <h1 style={{ color: getContrastYIQ(primaryColor) }}>
+            {albumDetails?.name}
+          </h1>
+          <Box sx={{ display: "flex", gap: 5 }}>
             <img
-              src={
-                albumDetails?.images[0]
-                  ? albumDetails.images?.[0].url
-                  : imagePlaceholder
-              }
-              width={"256pxpx"}
+              src={albumDetails?.images?.[0]?.url || imagePlaceholder}
+              width="256px"
               style={{ borderRadius: "10px" }}
+              alt="Album cover"
             />
             <Box
               sx={{
-                border: "1px solid lightgray",
+                border: `1px solid ${getContrastYIQ(primaryColor)}`,
                 width: "100%",
                 paddingLeft: 5,
                 borderRadius: "5px",
@@ -95,15 +110,19 @@ const AlbumPage: React.FC = () => {
                   height: "100%",
                 }}
               >
-                <p>Release Date: {albumDetails?.release_date}</p>
-                <p>Total songs: {albumDetails?.total_tracks}</p>
-                <p>
+                <p style={{ color: getContrastYIQ(primaryColor) }}>
+                  Release Date: {albumDetails?.release_date}
+                </p>
+                <p style={{ color: getContrastYIQ(primaryColor) }}>
+                  Total songs: {albumDetails?.total_tracks}
+                </p>
+                <p style={{ color: getContrastYIQ(primaryColor) }}>
                   Total Duration:{" "}
                   {albumDetails?.tracks
                     ? calculateTotalDuration(albumDetails.tracks.items)
                     : "00:00"}
                 </p>
-                <p>
+                <p style={{ color: getContrastYIQ(primaryColor) }}>
                   Artists:{" "}
                   {albumDetails?.artists
                     ? albumDetails.artists
@@ -116,7 +135,7 @@ const AlbumPage: React.FC = () => {
           </Box>
         </Box>
         <Box sx={{ width: "100%" }}>
-          <h2>Album Songs</h2>
+          <h2 style={{ color: getContrastYIQ(primaryColor) }}>Album Songs</h2>
           <AlbumSongsTable
             songs={albumDetails?.tracks ? albumDetails.tracks.items : []}
           />

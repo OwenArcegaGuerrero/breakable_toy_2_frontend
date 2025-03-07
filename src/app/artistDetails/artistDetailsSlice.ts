@@ -8,7 +8,11 @@ const initialState: artistDetailsSliceProps = {
 const artistDetailsSlice = createSlice({
   name: "artistDetails",
   initialState,
-  reducers: {},
+  reducers: {
+    clearArtistDetails: (state) => {
+      state.details = {};
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getArtistDetails.fulfilled, (state, action) => {
       state.details = action.payload;
@@ -28,5 +32,5 @@ export const getArtistDetails = createAsyncThunk(
   }
 );
 
-export const {} = artistDetailsSlice.actions;
+export const { clearArtistDetails } = artistDetailsSlice.actions;
 export default artistDetailsSlice.reducer;

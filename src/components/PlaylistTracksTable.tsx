@@ -8,14 +8,14 @@ import {
   TableRow,
 } from "@mui/material";
 import React from "react";
-import { ArtistTopTracksTableProps } from "../interfaces/ArtistTopTracksTableProps";
 import { imagePlaceholder } from "../../public/imagePlaceholder";
 import { convertMiliseconds } from "../utils";
 import { useNavigate } from "react-router-dom";
+import { PlaylistTracksTableProps } from "../interfaces/PlaylistTracksTableProps";
 
-const ArtistTopTracksTable: React.FC<ArtistTopTracksTableProps> = (
-  topTracks
-) => {
+const PlaylistTracksTable: React.FC<PlaylistTracksTableProps> = ({
+  tracks,
+}) => {
   const navigate = useNavigate();
   const handleClick = (id: string) => {
     navigate("/track?id=" + id);
@@ -44,13 +44,13 @@ const ArtistTopTracksTable: React.FC<ArtistTopTracksTableProps> = (
           </TableRow>
         </TableHead>
         <TableBody>
-          {topTracks.topTracks.tracks?.map((track, index) => (
+          {tracks.map((track, index) => (
             <TableRow
               role="button"
               onClick={() => {
-                handleClick(track.id || "");
+                handleClick(track.track?.id || "");
               }}
-              key={track.id}
+              key={track.track?.id}
               sx={{
                 "&:hover": {
                   cursor: "pointer",
@@ -65,19 +65,20 @@ const ArtistTopTracksTable: React.FC<ArtistTopTracksTableProps> = (
               <TableCell>
                 <img
                   src={
-                    track.album?.images?.[1]
-                      ? track.album.images[1].url
+                    track.track?.album?.images?.[1]
+                      ? track.track.album.images[1].url
                       : imagePlaceholder
                   }
                   width="64px"
                   style={{ borderRadius: "5px" }}
+                  alt="cover"
                 />
               </TableCell>
-              <TableCell>{track.name}</TableCell>
-              <TableCell>{track.popularity}</TableCell>
+              <TableCell>{track.track?.name}</TableCell>
+              <TableCell>{track.track?.popularity}</TableCell>
               <TableCell>
-                {track.duration_ms
-                  ? convertMiliseconds(track.duration_ms)
+                {track.track?.duration_ms
+                  ? convertMiliseconds(track.track.duration_ms)
                   : "00:00"}
               </TableCell>
             </TableRow>
@@ -88,4 +89,4 @@ const ArtistTopTracksTable: React.FC<ArtistTopTracksTableProps> = (
   );
 };
 
-export default ArtistTopTracksTable;
+export default PlaylistTracksTable;
