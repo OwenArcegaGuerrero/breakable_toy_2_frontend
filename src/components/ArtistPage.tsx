@@ -1,21 +1,23 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../app/store";
 import { getArtistDetails } from "../app/artistDetails/artistDetailsSlice";
 import { Box } from "@mui/material";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import ArtistTopTracksTable from "./ArtistTopTracksTable";
 import { imagePlaceholder } from "../../public/imagePlaceholder";
 import SpotifyCards from "./SpotifyCards";
 import GoBackButton from "./GoBackButton";
+import { getColorsFromImage, getContrastYIQ } from "../utils";
 
 const ArtistPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const artistDetails = useSelector(
     (state: RootState) => state.artistDetails.details
   );
-  const navigate = useNavigate();
+
+  const [primaryColor, setPrimaryColor] = useState<string>("#333");
 
   const getDetails = () => {
     const queryString = window.location.search;
@@ -31,6 +33,19 @@ const ArtistPage: React.FC = () => {
   useEffect(() => {
     getDetails();
   }, []);
+
+  useEffect(() => {
+    if (artistDetails?.artistDetails?.images?.[0]?.url) {
+      getColorsFromImage(artistDetails.artistDetails.images[0].url).then(
+        (colors) => {
+          if (colors.length > 0) {
+            setPrimaryColor(colors[0].hex);
+          }
+        }
+      );
+    }
+  }, [artistDetails]);
+
   return (
     <Box
       sx={{
@@ -42,13 +57,23 @@ const ArtistPage: React.FC = () => {
         padding: 5,
         fontFamily: "sans-serif",
         gap: 3,
+        backgroundColor: primaryColor,
+        color: "#fff",
       }}
     >
       <Box sx={{ display: "flex", width: "100%", height: "7vh" }}>
         <GoBackButton />
       </Box>
-      <Box>
-        <h1>{artistDetails.artistDetails?.name}</h1>
+      <Box
+        sx={{
+          width: "100%",
+          borderRadius: "20px",
+          textAlign: "center",
+        }}
+      >
+        <h1 style={{ fontSize: "3rem", color: getContrastYIQ(primaryColor) }}>
+          {artistDetails.artistDetails?.name}
+        </h1>
         <Box>
           <img
             src={
@@ -59,20 +84,21 @@ const ArtistPage: React.FC = () => {
             width={"256px"}
             style={{
               borderRadius: "10px",
+              border: `4px solid ${primaryColor}`,
             }}
           />
         </Box>
       </Box>
       <Box sx={{ width: "100%" }}>
-        <h2>Popular songs</h2>
+        <h2 style={{ color: getContrastYIQ(primaryColor) }}>Popular songs</h2>
         <ArtistTopTracksTable
           topTracks={
-            artistDetails.artistTopTracks ? artistDetails.artistTopTracks : {}
+            artistDetails.artistTopTracks ? artistDetails.artistTopTracks : []
           }
         />
       </Box>
       <Box sx={{ width: "100%" }}>
-        <h2>Discography</h2>
+        <h2 style={{ color: getContrastYIQ(primaryColor) }}>Discography</h2>
         <Box
           sx={{
             width: "100%",
@@ -83,7 +109,8 @@ const ArtistPage: React.FC = () => {
             alignItems: "center",
             justifyContent: "center",
             flexWrap: "wrap",
-            border: "1px solid lightgray",
+            border: `1px solid black`,
+            borderRadius: "10px",
           }}
         >
           {artistDetails.artistAlbums?.items ? (
@@ -91,7 +118,9 @@ const ArtistPage: React.FC = () => {
               <SpotifyCards
                 key={album.id}
                 image={
-                  album.images?.[1].url ? album.images[1].url : imagePlaceholder
+                  album.images?.[1]?.url
+                    ? album.images[1].url
+                    : imagePlaceholder
                 }
                 main={album.name ? album.name : ""}
                 secondary={album.release_date}

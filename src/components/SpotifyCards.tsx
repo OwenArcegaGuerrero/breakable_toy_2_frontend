@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SpotifyCardsProps } from "../interfaces/SpotifyCardsProps";
 import { useNavigate } from "react-router-dom";
+import { getColorsFromImage } from "../utils";
 
 const SpotifyCards: React.FC<SpotifyCardsProps> = ({
   main,
@@ -10,17 +11,28 @@ const SpotifyCards: React.FC<SpotifyCardsProps> = ({
   image,
   redirection,
 }) => {
+  const [mainColor, setMainColor] = useState<string>("");
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(redirection ? redirection : "");
   };
+
+  const getImageMainColor = async () => {
+    const colors = await getColorsFromImage(image);
+    setMainColor(colors[0].hex);
+  };
+
+  useEffect(() => {
+    getImageMainColor();
+  }, []);
   return (
     <Box
       onClick={handleClick}
       sx={{
-        border: "1px solid lightgray",
+        border: "2px solid",
         borderRadius: "5px",
+        borderColor: mainColor,
         width: "14vw",
         maxWidth: "auto",
         maxHeight: "13vh",
@@ -28,12 +40,14 @@ const SpotifyCards: React.FC<SpotifyCardsProps> = ({
         display: "flex",
         padding: 1,
         gap: 1,
+        backgroundColor: "white",
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "sans-serif",
         "&:hover": {
           cursor: "pointer",
           boxShadow: 5,
+          backgroundColor: "lightgray",
         },
       }}
     >
@@ -50,6 +64,7 @@ const SpotifyCards: React.FC<SpotifyCardsProps> = ({
           textAlign: "center",
           width: "70%",
           gap: 1,
+          color: "black",
         }}
       >
         <p

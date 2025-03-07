@@ -13,6 +13,10 @@ const searchSlice = createSlice({
     setSearchValue: (state, action: PayloadAction<string>) => {
       state.searchValue = action.payload;
     },
+    clearSearch: (state) => {
+      state.searchResults = {};
+      state.searchValue = "";
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getSearchResult.fulfilled, (state, action) => {
@@ -35,5 +39,5 @@ export const getSearchResult = createAsyncThunk(
   }
 );
 
-export const { setSearchValue } = searchSlice.actions;
+export const { setSearchValue, clearSearch } = searchSlice.actions;
 export default searchSlice.reducer;

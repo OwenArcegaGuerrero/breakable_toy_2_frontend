@@ -78,6 +78,7 @@ const SearchResults: React.FC = () => {
               }
               main={track.explicit ? track.name + " - E" : track.name}
               secondary={track.artists[0].name}
+              redirection={"/track?id=" + track.id}
             />
           ))}
         </Box>
@@ -155,6 +156,7 @@ const SearchResults: React.FC = () => {
                 main={playlist.name ? playlist.name : ""}
                 secondary={playlist.owner.display_name}
                 third={"Songs: " + playlist.tracks.total}
+                redirection={"/playlist?id=" + playlist.id}
               />
             ) : (
               <></>

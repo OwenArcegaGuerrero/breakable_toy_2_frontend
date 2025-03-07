@@ -26,14 +26,17 @@ const Dashboard: React.FC = () => {
         gap: 5,
       }}
     >
-      <Box sx={{ height: "20%", width: "50%" }}>
+      <Box data-testid="search-bar" sx={{ height: "20%", width: "50%" }}>
         <SearchBar />
       </Box>
-      <Box sx={{ height: "40vh", width: "90%" }}>
+      <Box data-testid="top-artists" sx={{ height: "40vh", width: "90%" }}>
         <TopArtists />
       </Box>
       {searchResults && Object.keys(searchResults).length > 0 ? (
-        <Box sx={{ minHeight: "30vh", width: "90%" }}>
+        <Box
+          data-testid="search-results"
+          sx={{ minHeight: "30vh", width: "90%" }}
+        >
           <SearchResults />
         </Box>
       ) : (

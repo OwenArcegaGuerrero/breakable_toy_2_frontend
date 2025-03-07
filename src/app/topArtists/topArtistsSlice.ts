@@ -8,7 +8,11 @@ const initialState: TopArtistsSliceProps = {
 const topArtistsSlice = createSlice({
   name: "topArtists",
   initialState,
-  reducers: {},
+  reducers: {
+    clearTopArtists: (state) => {
+      state.artists = {};
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getTopArtists.fulfilled, (state, action) => {
       state.artists = action.payload;
@@ -28,5 +32,5 @@ export const getTopArtists = createAsyncThunk(
   }
 );
 
-export const {} = topArtistsSlice.actions;
+export const { clearTopArtists } = topArtistsSlice.actions;
 export default topArtistsSlice.reducer;
